@@ -1,0 +1,47 @@
+---
+title: "rfbapp"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{rfbapp}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(rfbapp)
+```
+
+- Numerical traits
+
+```{r}
+out1 <- create_fbapp_template(variable="peso tuberculo",
+                              type = "numeric",
+                              defaultValue=10,
+                              minimum=0,
+                              maximum=100,
+                              details="kg/ha",
+                              categories=c("category1","category2","category3"),
+                              isVisible="",
+                              realPosition="")
+```
+
+- Categorical traits
+
+```{r}
+out2 <- create_fbapp_template(variable="color pulpa",
+                              type = "categorical",
+                              defaultValue=10,
+                              details="kg/ha",
+                              categories=c("morado","rosado","naranja"),
+                              isVisible="",
+                              realPosition="")
+```
+
+
