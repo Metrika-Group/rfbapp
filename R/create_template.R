@@ -220,21 +220,20 @@ create_fbapp_template <- function(variable="",
                                   ) 
          } else if(type == "photo"){
             out <- fbapp_attributes(
-                                     variable = variable, 
-                                     type = type, 
-                                     defaultValue =defaultValue, 
+                                    variable = variable, 
+                                    type = type
                                    ) 
-         }  else if(type == "count"){
+         } else if(type == "counter"){
+           out <- fbapp_attributes(
+                                   variable = variable, 
+                                   type = type,
+                                   details = details
+                                   ) 
+         } else if(type == "rust_rating"){
            out <- fbapp_attributes(
                                    variable = variable, 
                                    type = type, 
-                                   defaultValue =defaultValue, 
-                                 ) 
-         } else if(type == "rust rating"){
-           out <- fbapp_attributes(
-                                   variable = variable, 
-                                   type = type, 
-                                   defaultValue =defaultValue, 
+                                   defaultValue =defaultValue 
                                    ) 
          } else if(type == "audio"){
            out <- fbapp_attributes(
