@@ -18,10 +18,42 @@ knitr::opts_chunk$set(
 library(rfbapp)
 ```
 
-- Numerical traits
+## Paquete rfbapp 
+
+La idea central del paquete *rfbapp* es la generar listas de variables para la aplicación móvil `Field Book App`. Esta aplicación nos permite colectar datos campos usando dispositivos móviles como celulares o tablets permitiendo una colecta de datos controlada, segura y eficiente. Este tipo de colecta de datos evitan tediosas colectas hechas a mano, las cuales generan un número grande errores de tipeo y agotan al personal encargado en la trascripción de los datos.
+
+En este manual detallaremos como generar una lista de variables de diferentes tipos que luego serán importadas a un celular o tablet que tenga instalado Field Book App. Como la aplición maneja múltiples idiomas como inglés, español, frances, etc, sin embargo a la hora de definir los traits estos si estan en inglés (básico). Estos son los tipos de variables disponibles:
+
+- `numerical` (numérico)
+- `categorical` (categorica)
+- `percent` (porcentaje)
+- `audio` (audio)
+- `photo` (foto)
+- `date` (fecha)
+- `boolean` (boleano - verdadero/falso)
+- `text` (texto)
+- `photo` (foto)
+- `counter` (contador)
+- `multicat` (multicategorico)
+- `rust_rating` (grado de enfermedad)
+- `audio` (audio)
+- `location` (ubicación GPS)
+
+A continuación explicamos como generar cada una de ellas:
+
+
+- Variables numéricas
+
+Podemos crear una variable del tipo numerico usando  `type = numerical`. Las variables numéricas son aquellas que estan definindas en un rango continuo de valores, es decir pueden ser decimales, enteros, positivos, negativos, etc; y además, estan delimitidas dentro un intervalo de valores mínimo y máximo. Para crear variables numéricas, son importantes los siguientes parametros:
+
+* `minimum`: valor minimo que toma la variable.
+* `maximum`: valor máximo que toma la variable.
+* `details`: se precisa las unidades o una descripción más detallada.
+
+*Ejemplo*: sea la variable *peso de tuberculo (ptuber)*, en R la definimos como:
 
 ```{r}
-out1 <- create_fbapp_template(variable="peso tuberculo",
+var1 <- create_fbapp_template(variable="peso tuberculo",
                               type = "numeric",
                               defaultValue=10,
                               minimum=0,
@@ -34,8 +66,15 @@ out1 <- create_fbapp_template(variable="peso tuberculo",
 
 - Categorical traits
 
+Podemos crear una variable del tipo porcentaje usando  `type = categorical`. Las variables categóricas son aquellas cuyos valores son categorias o escalas. 
+Puede ser de 2 tipos: variable categóricas nominales y variables categoricas ordinales. Los siguientes parametro:
+
+* `categories`: se escribe las categorias (nominales o ordinales) en forma de vector.
+
+*Ejemplo*: sea la variable `color de pulpa` de camote, una variable categorica nominal con 3 categorias, tales como morado, rosado y naranja. 
+
 ```{r}
-out2 <- create_fbapp_template(variable="color pulpa",
+var21 <- create_fbapp_template(variable="color pulpa",
                               type = "categorical",
                               defaultValue=10,
                               details="kg/ha",
@@ -43,5 +82,161 @@ out2 <- create_fbapp_template(variable="color pulpa",
                               isVisible="",
                               realPosition="")
 ```
+
+*Ejemplo*: sea la variable `sabor de pulpa` de papa, una variable categorica ordinal. 
+
+```{r}
+var22 <- create_fbapp_template(variable="Sabor",
+                              type = "categorical",
+                              defaultValue=10,
+                              details="kg/ha",
+                              categories=c("muy amargo","amargo","insabora","dulce","muy dulce"),
+                              isVisible="",
+                              realPosition="")
+```
+
+
+- Percentage
+
+Podemos crear una variable del tipo porcentaje usando `type = percentage`. Esta variable viene por defecto con 0 y 100 como valores minimos y maximo dado que es un porcentaje. 
+
+*Ejemplo*: sea la variable `contenido de nitrogeno`, una variable expresada en porcentaje, la cual R se implementa:
+
+```{r}
+var3 <- create_fbapp_template(variable = "Contenido de Nitrogeno", 
+                              type = "percent", 
+                              defaultValue = 20, 
+                              )
+```
+
+- Fecha
+
+Podemos crear una variable del tipo fecha usando el `type = date`. Esta variable por defecto se ubica en la fecha que se esta realizando la evaluación.
+
+*Ejemplo*: sea la variable `fecha de evaluación`, en R podemos implementar de la siguiente forma:   
+
+```{r}
+var4 <- create_fbapp_template(variable = "Fecha de cosecha", 
+                              type = "date"
+                              )
+```
+
+- Booleano o Verdadero/Falso
+
+Podemos crear una variable del tipo booleano usando el `type = boolean`, en R podemos implementarla de la siguiente forma:
+
+```{r}
+var5 <- create_fbapp_template(
+                              variable = "Presencia de patogeno", 
+                              type = "boolean", 
+                              defaultValue = TRUE, 
+                              details = "presencia de patogeno en la planta"
+                              )
+```
+
+- Texto
+
+Podemos crear una variable del tipo texto usando  `type = text`, en R podemos implementarla de la siguiente forma:
+
+*Ejemplo*: sea la variable `nota adicional` en la cual anotamos algun comentario adicional que encontramos en el campo.
+
+```{r}
+var6 <- create_fbapp_template(
+                              variable = "Nota adicional", 
+                              type = "text", 
+                              defaultValue = defaultValue, 
+                              details = "Revisar el estado de la parcela"
+                              )
+```
+
+- Foto
+
+Podemos crear una variable del tipo texto usando  `type = photo`. Esta variable permite tomar fotos a las parceles, plantas, muestra, etc.; almacenandolo en el dispositivo mobil de forma indexada.
+
+*Ejemplo*: sea la variable `imagen de la planta`, que nos sirve para tomar una foto o imagen del estado actual de la planta. En R, la creamos de la siguiente manera: 
+
+```{r}
+var7 <- create_fbapp_template(
+                              variable = "Imagen de la planta", 
+                              type = "photo", 
+                              defaultValue = defaultValue, 
+                              details = ""
+                              )
+```
+
+- Contador
+
+Podemos crear una variable del tipo texto usando `type = count`. Esta variable permite incrementar o disminuir en 1 unidad. 
+
+*Ejemplo*: sea la variable `numero de plantas`, que nos sirve para tomar una foto o imagen del estado actual de la planta. En R, la creamos de la siguiente manera:
+
+```{r}
+var8 <- create_fbapp_template(
+                              variable = "Numero de plantas", 
+                              type = "count", 
+                              defaultValue = defaultValue, 
+                              details = details
+                              )
+```
+
+- Multicategoria
+
+Podemos crear una variable multi-categorica usando `type = multicat`. Esta variable nos permite seleccionar más de una catergoria cuando realizamos una evaluación en el campo. 
+
+*Ejemplo*: una variable categorica nominal con 3 categorias, tales como morado, rosado y naranja. 
+
+```{r}
+var9 <- create_fbapp_template(
+                              variable = "Numero de plantas", 
+                              type = "rust rating", 
+                              defaultValue = defaultValue, 
+                              details = details
+                              )
+```
+
+- Grado de enfermedad
+
+Podemos crear una variable del tipo texto usando  `type = rust rating`. Esta variable nos permite cuantificar el grado de enfermedad o daño que se ha producido en la planta. Esta variable va de 0 a 100, incrementandose 5 unidades. Por ejemplo: 0, 5, 10, ...,95, 100.
+
+*Ejemplo*: sea la variable `numero de plantas`, en R podemos implementarla de la siguiente forma:
+
+```{r}
+var10 <- create_fbapp_template(
+                              variable = "Numero de plantas", 
+                              type = "rust rating", 
+                              defaultValue = defaultValue, 
+                              details = details
+                              )
+```
+
+- Audio
+
+Podemos crear una variable del tipo texto usando  `type = audio`. Esta variable nos permite grabar con la voz algún comentario o nota. 
+
+*Ejemplo*:  sea la variable `notas de audio` en R podemos implementarla de la siguiente forma:
+
+```{r}
+var11 <- create_fbapp_template(
+                              variable = "Notas de audio", 
+                              type = "audio", 
+                              defaultValue = 20, 
+                              )
+```
+
+- Ubicación GPS
+
+Podemos crear una variable del tipo GPS usando  `type = location`. Esta variable nos permite capturar la posición del valor observado a través del GPS del dispositivo móvil. 
+
+*Ejemplo*: sea la variable `ubicación GPS` en R podemos implementarla de la siguiente forma:
+
+```{r}
+var12 <- create_fbapp_template(
+                              variable = "Ubicación GPS", 
+                              type = "photo", 
+                              defaultValue = 20, 
+                              )
+```
+
+
 
 

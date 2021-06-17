@@ -17,20 +17,20 @@
 
 
 fbapp_attributes <- function(variable="",
-                             type=c("numeric", "categorical", "percent",
-                                    "date","boolean","text","photo",
-                                    "counter","multicat", "score",
-                                    "audio","location"),
+                             type=c("numeric", "categorical","percent",
+                                    "date","boolean","text",
+                                    "photo", "counter","multicat", 
+                                    "rust_rating", "audio", "location"),
                              defaultValue="",
                              minimum=0, maximum= 1,
                              details="", categories="",
                              isVisible="", realPosition=1){
   
   type <- match.arg(type)
-  variable_type <- c("numeric", "categorical", "percent",
-                     "date","boolean","text","photo",
-                     "counter","multicat", "score","rust_rating",
-                     "audio","location"
+  variable_type <- c("numeric", "categorical","percent",
+                     "date","boolean","text",
+                     "photo", "counter","multicat", 
+                     "rust_rating", "audio", "location"
                     )
   
   ######## check variable name and type
@@ -173,9 +173,11 @@ create_fbapp_template <- function(variable="",
          } else if(type == "percent"){ #Percent variable
            
            out <- fbapp_attributes(
-                                   variable = variable, type = type, 
+                                   variable = variable, 
+                                   type = type, 
                                    defaultValue = defaultValue, 
-                                   minimum=0, maximum = 100
+                                   minimum=0, 
+                                   maximum = 100
                                   )       
            
            
@@ -196,19 +198,16 @@ create_fbapp_template <- function(variable="",
                                   variable = variable, 
                                   type = type, 
                                   defaultValue =defaultValue, 
-                                  categories = categories,
                                   details = details
                                   )  
            
          } else if(type=="boolean"){
            
-           categories <- paste0(categories, collapse = "/")
            #defaultValue = "TRUE" or "FALSE" in uppercase
            out <- fbapp_attributes(
                                    variable = variable, 
                                    type = type, 
                                    defaultValue =defaultValue, 
-                                   categories = categories,
                                    details = details
                                   )  
            
@@ -219,7 +218,7 @@ create_fbapp_template <- function(variable="",
                                    defaultValue =defaultValue, 
                                    details = details
                                   ) 
-         } else if(type == "picture"){
+         } else if(type == "photo"){
             out <- fbapp_attributes(
                                      variable = variable, 
                                      type = type, 
@@ -243,11 +242,11 @@ create_fbapp_template <- function(variable="",
                                    type = type, 
                                    defaultValue =defaultValue, 
                                    ) 
-         } else if(type == "video"){
+         } else if(type == "location"){
              out <- fbapp_attributes(
                                      variable = variable, 
-                                     type = type, 
-                                     defaultValue =defaultValue, 
+                                     type = "location", 
+                                     defaultValue = defaultValue 
                                     ) 
          } 
            
