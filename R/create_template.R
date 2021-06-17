@@ -122,7 +122,7 @@ fbapp_attributes <- function(variable="",
                     minimum = as.character(minimum), maximum = as.character(maximum), details = as.character(details), 
                     categories = as.character(categories), isVisible = as.character(isVisible), realPosition =as.character(realPosition)
                     )
-  
+  class(out) <- c("data.frame","rfbapp")
   return(out)
   
 }

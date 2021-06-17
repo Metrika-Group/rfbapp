@@ -1,5 +1,5 @@
 ---
-title: "Colecta de datos con aplicaciones móviles con FieldBook y R"
+title: "Colecta de datos con aplicaciones móviles con FieldBook y rfbapp"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{rfbapp}
@@ -7,14 +7,16 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
-
+<!--- TODO
+-->
 
 ## Introducción
 
-La idea central del paquete *rfbapp* es la generar listas de variables para la aplicacion mvil `Field Book App`. Esta aplicacion nos permite colectar datos campos usando dispositivos moviles como celulares o tablets permitiendo una colecta de datos controlada, segura y eficiente. Este tipo de colecta de datos evitan tediosas colectas hechas a mano, las cuales generan un numero grande errores de tipeo y agotan al personal encargado en la trascripcion de los datos.
+La idea central del paquete **rfbapp** es generar una serie de listas o tablas de variables que sirven para colectar datos con la aplicacion movil `Field Book App`. FieldBook App nos permite colectar datos campos usando dispositivos moviles como celulares o tablets de forma offline, permitiendo una colecta de datos controlada, segura y libre de errores de tipeo. Este tipo de colecta de datos evitan tediosas colectas hechas a mano, las cuales generan un numero grande errores en la transcripcion y agotan al personal encargado re retranscribir los datos.
 
 ## Instalation
+
+Para instalar el paquete **rfbapp*, en R colocamos:
 
 ```{r}
 ## Installation
@@ -238,6 +240,18 @@ var12 <- create_fbapp_template(
                               defaultValue = 20, 
                               )
 ```
+
+## Exportar archivo
+
+Para exportar el archivo con todas las variables, usamos la funcion `write_rfbapp`
+
+```{r}
+#Juntamos todas las variables en una tabla
+tabla_var <- rbind(v1,v21,v22,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12)
+write_rfbapp(tabla_var, file= "variables_estudio.trt")
+```
+
+
 
 
 
