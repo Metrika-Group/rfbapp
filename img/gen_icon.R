@@ -22,4 +22,12 @@ sticker(logo, package="rfbapp",white_around_sticker = TRUE,
         p_size=20, s_x=1, s_y=.8, s_width=1.4, s_height=1.5, 
         h_fill="#0be247ff",h_color = "#000000",  p_family = "Righteous",p_color = "black",
         filename = "man/figures/rfbapp_sticker_logo.png"
-)
+        )
+
+#Remove white 
+logo <- image_read("man/figures/rfbapp_sticker_logo.png")
+logo <- image_transparent(logo, 'none')
+image_write(logo, path = "man/figures/rfbapp_sticker_logo_nobckgr.png", format = "png")
+
+
+
