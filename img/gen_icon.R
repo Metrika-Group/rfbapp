@@ -9,16 +9,17 @@ library(dplyr)
 # -------------------------------------------------------------------------
 # inkaverse ---------------------------------------------------------------
 # -------------------------------------------------------------------------
-#font_add_google("Righteous")
+font_add_google("Righteous")
+#font_add_google(name="Montserrat")
 
 logo <- list.files("img/"
                    , full.names = T
-                   , pattern = "rfbapp_logo_raw_v02.png"
+                   , pattern = "raw_rbfapp_icon.png"
 ) %>% 
   image_read() 
 
-sticker(logo, package="Rfbapp",white_around_sticker = TRUE,
-        p_size=20, s_x=1, s_y=.8, s_width=1.4, s_height=1.2, 
+sticker(logo, package="rfbapp",white_around_sticker = TRUE,
+        p_size=20, s_x=1, s_y=.8, s_width=1.4, s_height=1.5, 
         h_fill="#0be247ff",h_color = "#000000",  p_family = "Righteous",p_color = "black",
-        filename = "img/rfbapp_logo.png"
+        filename = "man/figures/rfbapp_sticker_logo.png"
 )

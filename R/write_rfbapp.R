@@ -23,7 +23,7 @@ write_rfbapp <- function(x, file = NULL ){
   }
   
   if(is.element("rfbapp",class(x))){
-    write.csv(x, file = paste0("/app/", file,".trt"), row.names = FALSE, na = "")  
+    write.csv(x, file = file, row.names = FALSE, na = "")  
   }
   
 

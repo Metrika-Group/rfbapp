@@ -1,5 +1,5 @@
 ---
-title: "Colecta de datos con aplicaciones móviles con FieldBook y rfbapp"
+title: "Colecta de datos con aplicaciones moviles y R: Field Book App y rfbapp"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{rfbapp}
@@ -10,9 +10,12 @@ vignette: >
 <!--- TODO
 -->
 
-## Introducción
+## Introduccion
 
-La idea central del paquete **rfbapp** es generar una serie de listas o tablas de variables que sirven para colectar datos con la aplicacion movil `Field Book App`. FieldBook App nos permite colectar datos campos usando dispositivos moviles como celulares o tablets de forma offline, permitiendo una colecta de datos controlada, segura y libre de errores de tipeo. Este tipo de colecta de datos evitan tediosas colectas hechas a mano, las cuales generan un numero grande errores en la transcripcion y agotan al personal encargado re retranscribir los datos.
+Usualmente, el desarrollo de productos y variedades en agricultura involucra la colecta de miles de datos observados en parcelas, en diferentes localidades y en diferentes tiempos. Para manejar eficientemente este banco de datos a gran escala, el manejo digital/electronico de estos datos es esencial. Sin embargo, en la actualidad, todavia un gran número de instituciones publicas y privadas escriben y transcriben grandes cantidades de datos a un hoja de papel. Esto genera un decremento en la integredad de los datos, reduce en gran medida las capacidades de crecimiento el desarrollo de productos agropeacuarios. Para reducir estas limitaciones, existen nuevas aplicaciones móviles libres que funcionan en celulares y tablets con Android OS. Este tipo de tecnologias elimina las barreras tecnologicas y de costo. 
+
+
+La idea central del paquete **rfbapp** es generar una serie de listas o tablas de variables que sirven para colectar datos con la aplicacion movil `Field Book App`. FieldBook App nos permite colectar datos campos usando1 dispositivos moviles como celulares o tablets de forma offline, permitiendo una colecta de datos controlada, segura y libre de errores de tipeo. Este tipo de colecta de datos evitan tediosas colectas hechas a mano, las cuales generan un numero grande errores en la transcripcion y agotan al personal encargado re retranscribir los datos.
 
 ## Instalation
 
@@ -222,8 +225,7 @@ Podemos crear una variable del tipo texto usando  `type = audio`. Esta variable 
 ```{r}
 var11 <- create_fbapp_template(
                               variable = "Notas de audio", 
-                              type = "audio", 
-                              defaultValue = 20, 
+                              type = "audio"
                               )
 ```
 
@@ -236,8 +238,7 @@ Podemos crear una variable del tipo GPS usando  `type = location`. Esta variable
 ```{r}
 var12 <- create_fbapp_template(
                               variable = "Ubicacion GPS", 
-                              type = "photo", 
-                              defaultValue = 20, 
+                              type = "photo"
                               )
 ```
 
@@ -247,7 +248,8 @@ Para exportar el archivo con todas las variables, usamos la funcion `write_rfbap
 
 ```{r}
 #Juntamos todas las variables en una tabla
-tabla_var <- rbind(v1,v21,v22,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12)
+tabla_var <- rbind(var1,var21,var22,var3,var4,var5,var6,var7,var8,var9,
+                   var10,var11,var12)
 write_rfbapp(tabla_var, file= "variables_estudio.trt")
 ```
 
