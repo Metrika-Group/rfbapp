@@ -1,6 +1,4 @@
-# *rfbapp*: Create FieldBook App templates for mobile data collection
-
-<img align="right" src="man/figures/rfbapp_sticker_logo.png">
+# *rfbapp*: Create FieldBook App templates for mobile data collection <img src="man/figures/rfbapp_sticker_logo.png" width="200" align="right" />
 
 *rfabpp* is an r-package that serve as generator of variables for Field Book App. 
 
@@ -20,6 +18,7 @@
 - `Counting variables` 
 - `Multi-categorical variables` 
 - `Rust scoring variables` 
+
 
 ## Workflow
 
