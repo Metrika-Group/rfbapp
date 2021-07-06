@@ -1,4 +1,4 @@
-# *rfbapp*:  <img src="man/figures/rfbapp_sticker_logo_rmbgr.png" width="200" align="right" />
+# *rfbapp*  <img src="man/figures/rfbapp_sticker_logo_rmbgr.png" width="200" align="right" />
 
 An R package to facilitate generating variable/trait worksheet for Field Book App [Field Book App](https://play.google.com/store/apps/details?id=com.fieldbook.tracker&hl=es_PE&gl=US).
 
@@ -26,10 +26,9 @@ An important feature of Field Book App is that runs without any internet connect
 
 The main workflow consist of three steps:
 
-- Create and define variables with `rfbapp`
-- Export variables in `.trt` file.
-- Transfer `.trt` in the `trait` folder of the Field Book App
-- Go to collect your data!
+1. Create and define your variables with `rfbapp` and export variables in `.trt` file.
+2. Transfer `.trt` in the `trait` folder of the `Field Book App`
+3. Go, collect your data!
 
 
 <img src="man/figures/rfbapp_workflow.png" />
