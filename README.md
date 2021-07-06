@@ -21,6 +21,22 @@ An important feature of Field Book App is that runs without any internet connect
 - `Multi-categorical variables` 
 - `Rust scoring variables` 
 
+## Installation and Usage
+
+You can install ``rfbapp` using:
+
+``` r
+if (!require("remotes"))
+  install.packages("remotes")
+remotes::install_github("Metrika-Group/rfbapp")
+```
+Load `rfbapp` in your R console
+
+``` r
+library(rfbapp)
+```
+
+More details in the website (under construction)
 
 ## Workflow
 
