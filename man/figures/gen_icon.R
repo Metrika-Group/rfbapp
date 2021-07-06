@@ -12,7 +12,7 @@ library(dplyr)
 font_add_google("Righteous")
 #font_add_google(name="Montserrat")
 
-logo <- list.files("img/"
+logo <- list.files("man/figures/"
                    , full.names = T
                    , pattern = "raw_rbfapp_icon.png"
 ) %>% 
@@ -25,9 +25,9 @@ sticker(logo, package="rfbapp",white_around_sticker = TRUE,
         )
 
 #Remove white 
-logo <- image_read("man/figures/rfbapp_sticker_logo.png")
-logo <- image_transparent(logo, 'none')
-image_write(logo, path = "man/figures/rfbapp_sticker_logo_nobckgr.png", format = "png")
+# logo <- image_read("man/figures/rfbapp_sticker_logo.png")
+# logo <- image_transparent(logo, 'none')
+# image_write(logo, path = "man/figures/rfbapp_sticker_logo_nobckgr.png", format = "png")
 
 
 
