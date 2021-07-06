@@ -8,11 +8,15 @@ Authors@R:
            email = "obacc07@gmail.com.com",
            comment = c(ORCID = "0000-0002-6852-9598"))
 Description: Utility functions to generate variable or trait files for 'Field Book'.
-License: `use_mit_license()`
+License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Depends:
+   R (>= 4.0.3),
+   utils,
+   janitor
 Suggests: 
     testthat,
     knitr,

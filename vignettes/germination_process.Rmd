@@ -1,0 +1,70 @@
+---
+title: "Germination Data Collection"
+author: "Omar E. Benites Alfaro"
+date: "6/7/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Germination variables
+
+Usually in agronomic studies, there exists the necessity of how the germination process of certain plant or variety works. It usually involves consecutives evaluations in time of a germination variable. Flavio et. al (2019) provides a germination study that includes germination evaluations that we are going to mimic to recreate an entire example of how  an `rfbapp` along with `Field Book App`, a mobile phone application, can integrate each other to collect data into the field. 
+
+## Creation of variables
+
+In aforementioned study, there is one variable named `D`, which denote the number of germinated seeds in a certain day. For example: `D1` number of germination seeds at `day 1`. The study especify the number of seeds initially planted are 50 per experimental unit (EU). Thus, the researcher should count how many seed successfully germinated in a certain day from the initial sample of 50 seeds. For example: in day 1, the number of germinated seeds are `D1=39`in first EU. 
+
+To create a variable list in `rfbapp`` that satisfy the aim of our study, we identify the followig attributes:
+
+- variable type: `quantitative`
+- minimun number of seeds: `0`
+- maximum number of seeds: `50`
+- variable name: `D`
+- number of evaluations in time: `10`
+
+In `rfbapp` we can create quantitative variables as follows:
+
+```{r}
+vars <- create_fbapp_template(variable = "D", type = "numeric", details = "Numer of germinated seeds", ntime = 10)
+vars
+```
+Now we export these set of variables via:
+
+```{r, eval=FALSE}
+rfbapp::write_rfbapp(vars,file = "germination_variables.trt")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+So, we can identify the following aspects:
+
+- variable type: quantitative - count
+- 
+
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+

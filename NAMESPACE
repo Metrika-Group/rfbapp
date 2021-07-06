@@ -2,3 +2,5 @@
 
 export(create_fbapp_template)
 export(write_rfbapp)
+importFrom(janitor,make_clean_names)
+importFrom(utils,write.csv)

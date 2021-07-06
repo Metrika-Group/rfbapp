@@ -24,7 +24,8 @@ fbapp_attributes <- function(variable="",
                              defaultValue="",
                              minimum=0, maximum= 1,
                              details="", categories="",
-                             isVisible="", realPosition=1){
+                             isVisible="", realPosition=1,
+                             ntime=1){
   
   type <- match.arg(type)
   variable_type <- c("numeric", "categorical","percent",
@@ -117,11 +118,30 @@ fbapp_attributes <- function(variable="",
       details <- ""
   } 
   
+  if(ntime<1){
+    message("Require a number greater or equal to 1 / Se requiere un numero mayor o igual 1")
+    return()
+  }
+  
+  #variable name
+  variable <- janitor::make_clean_names(variable)
   out <- data.frame(
-                    trait = as.character(variable), format = as.character(type), defaultValue=as.character(defaultValue), 
-                    minimum = as.character(minimum), maximum = as.character(maximum), details = as.character(details), 
-                    categories = as.character(categories), isVisible = as.character(isVisible), realPosition =as.character(realPosition)
+                    trait = as.character(variable), 
+                    format = as.character(type), 
+                    defaultValue=as.character(defaultValue), 
+                    minimum = as.character(minimum), 
+                    maximum = as.character(maximum), 
+                    details = as.character(details), 
+                    categories = as.character(categories), 
+                    isVisible = as.character(isVisible), 
+                    realPosition =as.character(realPosition)
                     )
+  
+  if(ntime>1){
+    out <- do.call("rbind", replicate(ntime, out, simplify = FALSE))
+    out$trait <- paste0(out$trait, "_", 1:ntime)
+  } 
+  
   class(out) <- c("data.frame","rfbapp")
   return(out)
   
@@ -139,8 +159,9 @@ fbapp_attributes <- function(variable="",
 #' @param categories A character vector of categories of the variable. Only available for type \code{categorical}
 #' @param isVisible boolean. If \code{true}, the variables should be visible in the interface, otherwise is \code{false}.
 #' @param realPosition integer. Position of variable in the table 
-#' @param num_eval integer. Number of evaluation per variable
+#' @param ntime integer Number of evaluation per time. By default 1.
 #' @author Omar Benites
+#' @importFrom janitor make_clean_names
 #' @export
 create_fbapp_template <- function(variable="",
                                   type = c("numeric", "categorical", "percent",
@@ -155,7 +176,7 @@ create_fbapp_template <- function(variable="",
                                   categories=NULL,
                                   isVisible="",
                                   realPosition="",
-                                  num_eval = 1
+                                  ntime = 1
                                   ){
       
       #Field book app attributes
@@ -164,10 +185,13 @@ create_fbapp_template <- function(variable="",
          if(type=="numeric"){  #numeric variable
            
            out <- fbapp_attributes(
-                                  variable = variable, type = type, 
+                                  variable = variable, 
+                                  type = type, 
                                   defaultValue = defaultValue, 
-                                  minimum = minimum, maximum = maximum,
-                                  details = details
+                                  minimum = minimum, 
+                                  maximum = maximum,
+                                  details = details,
+                                  ntime = ntime
                                   )           
            
          } else if(type == "percent"){ #Percent variable
@@ -177,7 +201,8 @@ create_fbapp_template <- function(variable="",
                                    type = type, 
                                    defaultValue = defaultValue, 
                                    minimum=0, 
-                                   maximum = 100
+                                   maximum = 100,
+                                   ntime = ntime
                                   )       
            
            
@@ -189,7 +214,8 @@ create_fbapp_template <- function(variable="",
                                    type = type, 
                                    defaultValue = defaultValue, 
                                    categories = categories,
-                                   details = details
+                                   details = details,
+                                   ntime = ntime
                                    )  
             
          } else if(type=="date"){
@@ -198,7 +224,8 @@ create_fbapp_template <- function(variable="",
                                   variable = variable, 
                                   type = type, 
                                   defaultValue =defaultValue, 
-                                  details = details
+                                  details = details,
+                                  ntime = ntime
                                   )  
            
          } else if(type=="boolean"){
@@ -208,7 +235,8 @@ create_fbapp_template <- function(variable="",
                                    variable = variable, 
                                    type = type, 
                                    defaultValue =defaultValue, 
-                                   details = details
+                                   details = details,
+                                   ntime = ntime
                                   )  
            
          } else if(type == "text"){
@@ -216,40 +244,47 @@ create_fbapp_template <- function(variable="",
                                    variable = variable, 
                                    type = type, 
                                    defaultValue =defaultValue, 
-                                   details = details
+                                   details = details,
+                                   ntime = ntime
                                   ) 
          } else if(type == "photo"){
             out <- fbapp_attributes(
                                     variable = variable, 
-                                    type = type
+                                    type = type,
+                                    ntime = ntime
                                    ) 
          } else if(type == "counter"){
            out <- fbapp_attributes(
                                    variable = variable, 
                                    type = type,
-                                   details = details
+                                   details = details,
+                                   ntime = ntime
                                    ) 
          } else if(type == "rust_rating"){
            out <- fbapp_attributes(
                                    variable = variable, 
                                    type = type, 
-                                   defaultValue =defaultValue 
+                                   defaultValue =defaultValue ,
+                                   ntime = ntime
                                    ) 
          } else if(type == "audio"){
            out <- fbapp_attributes(
                                    variable = variable, 
                                    type = type, 
-                                   defaultValue =defaultValue, 
+                                   defaultValue =defaultValue,
+                                   ntime = ntime 
                                    ) 
          } else if(type == "location"){
              out <- fbapp_attributes(
                                      variable = variable, 
                                      type = "location", 
-                                     defaultValue = defaultValue 
+                                     defaultValue = defaultValue ,
+                                     ntime = ntime
                                     ) 
-         } 
-           
-        return(out)   
+         }
+    #In case of having more than 1 evaluation in time
+        
+    return(out)   
 }
                     
 

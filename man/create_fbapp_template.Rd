@@ -15,7 +15,7 @@ create_fbapp_template(
   categories = NULL,
   isVisible = "",
   realPosition = "",
-  num_eval = 1
+  ntime = 1
 )
 }
 \arguments{
@@ -37,7 +37,7 @@ create_fbapp_template(
 
 \item{realPosition}{integer. Position of variable in the table}
 
-\item{num_eval}{integer. Number of evaluation per variable}
+\item{ntime}{integer Number of evaluation per time. By default 1.}
 }
 \description{
 Create Field Book App template

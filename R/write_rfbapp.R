@@ -8,6 +8,7 @@
 #' @description \code{write_rfbapp} write a data.frame to an \code{.trt} file (FieldBook App format)
 #' @param x object that has table containing a set of variables
 #' @param file \code{trt} file name
+#' @importFrom utils write.csv
 #' @export
 
 write_rfbapp <- function(x, file = NULL ){
