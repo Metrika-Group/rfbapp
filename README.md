@@ -1,6 +1,6 @@
 # *rfbapp*  <img src="man/figures/rfbapp_sticker_logo_rmbgr.png" width="200" align="right" />
 
-An R package to facilitate generating variable/trait worksheet for Field Book App [Field Book App](https://play.google.com/store/apps/details?id=com.fieldbook.tracker&hl=es_PE&gl=US).
+An R package to facilitate generating variable/trait worksheet for [Field Book App](https://play.google.com/store/apps/details?id=com.fieldbook.tracker&hl=es_PE&gl=US).
 
 [rfbapp](https://github.com/Metrika-Group/rfbapp) aims at creating and automating customized variables in *Field Book App*, a mobile phone application to collect data in the field and laboratory. Most frequently, users create variables through the user app's interface one by one. Also, it's quite intrincate to create variables outside of the application. With *rfbapp* users can automate the creation of multiples variables at once without interacting with the mobile application. Then, users are able to export them inside a *.trt* file, to be finally load it in Field Book App's trait folder. 
 
