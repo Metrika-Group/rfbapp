@@ -1,10 +1,11 @@
 # *rfbapp*  <img src="man/figures/rfbapp_sticker_logo_rmbgr.png" width="200" align="right" />
 
-An R package to facilitate generating variable/trait worksheet for [Field Book App](https://play.google.com/store/apps/details?id=com.fieldbook.tracker&hl=es_PE&gl=US).
+An R package to facilitate generating variable/trait forms for [Field Book App](https://play.google.com/store/apps/details?id=com.fieldbook.tracker&hl=es_PE&gl=US).
 
-[rfbapp](https://github.com/Metrika-Group/rfbapp) aims at creating and automating customized variables in *Field Book App*, a mobile phone application to collect data in the field and laboratory. Most frequently, users create variables through the user app's interface one by one. Also, it's quite intrincate to create variables outside of the application. With *rfbapp* users can automate the creation of multiples variables at once without interacting with the mobile application. Then, users are able to export them inside a *.trt* file, to be finally load it in Field Book App's trait folder. 
+[rfbapp](https://github.com/Metrika-Group/rfbapp) aims at creating and automating customized variable/trait forms for *Field Book App*, a mobile phone application to collect data in the field and laboratory. Most frequently, users create variable or trait forms through the user  interface of the app one by one. However, it's quite intrincate to create variables outside of the application, and also it is not possible to save separately to share with others. With *rfbapp* users can automate the creation of multiples variables at once without interacting with the mobile application. It means, users would be able to save the form files in their PC.
+Then, users are capable to export this form file in *.trt* format, to be finally load it in Field Book application. 
 
-An important feature of Field Book App is that runs without any internet connection, making a plausible solution in places where there is bad or no internet connection. It operates on android devices and it free to use.
+An important feature of `Field Book App` is that runs without any internet connection, making a plausible solution in places where there is no internet connection. It operates on `Android` devices and it **free** to use.
 
 *rfbapp* supports the whole list types of variables available in Field Book App, such as:
 
@@ -42,7 +43,7 @@ More details in the website (under construction)
 
 The main workflow consist of three steps:
 
-1. Create and define your variables with `rfbapp` and export variables in `.trt` file.
+1. Create and define your form variables with `rfbapp` and export it in `.trt` file.
 2. Transfer `.trt` in the `trait` folder of the `Field Book App`
 3. Go, collect your data!
 

@@ -1,5 +1,5 @@
 Package: rfbapp
-Title: Field Book App Variable Generator in R
+Title: Field Book App Form Variable in R
 Version: 0.0.1
 Authors@R: 
     person(given = "Omar",
@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "obacc07@gmail.com.com",
            comment = c(ORCID = "0000-0002-6852-9598"))
-Description: Utility functions to generate variable or trait files for 'Field Book'.
+Description: Utility functions to generate form variable or trait files for 'Field Book'.
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
