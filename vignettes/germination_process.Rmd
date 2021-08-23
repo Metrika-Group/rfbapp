@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(rfbapp)
 ```
 
 ## Germination variables
@@ -36,30 +37,6 @@ Now we export these set of variables via:
 ```{r, eval=FALSE}
 rfbapp::write_rfbapp(vars,file = "germination_variables.trt")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-So, we can identify the following aspects:
-
-- variable type: quantitative - count
-- 
-
-
-
-```{r}
-
-```
-
 
 
 

@@ -33,7 +33,7 @@ library(rfbapp)
 
 En este manual detallaremos como generar una lista de variables de diferentes tipos que luego seran importadas a un celular o tablet que tenga instalado Field Book App. Como la aplicion maneja multiples idiomas como ingles, espanol, frances, etc, sin embargo a la hora de definir los traits estos si estan en ingles (basico). Estos son los tipos de variables disponibles:
 
-- `numerical` (numerico)
+- `numeric` (numerico)
 - `categorical` (categorica)
 - `percent` (porcentaje)
 - `audio` (audio)
@@ -41,11 +41,9 @@ En este manual detallaremos como generar una lista de variables de diferentes ti
 - `date` (fecha)
 - `boolean` (boleano - verdadero/falso)
 - `text` (texto)
-- `photo` (foto)
 - `counter` (contador)
 - `multicat` (multicategorico)
 - `rust_rating` (grado de enfermedad)
-- `audio` (audio)
 - `location` (ubicacion GPS)
 
 A continuacion explicamos como generar cada una de ellas:
@@ -68,7 +66,6 @@ var1 <- create_fbapp_template(variable="peso tuberculo",
                               minimum=0,
                               maximum=100,
                               details="kg/ha",
-                              categories=c("category1","category2","category3"),
                               isVisible="",
                               realPosition="")
 ```
@@ -85,7 +82,7 @@ Puede ser de 2 tipos: variable categoricas nominales y variables categoricas ord
 ```{r}
 var21 <- create_fbapp_template(variable="color pulpa",
                               type = "categorical",
-                              defaultValue=10,
+                              defaultValue="",
                               details="kg/ha",
                               categories=c("morado","rosado","naranja"),
                               isVisible="",
@@ -97,7 +94,7 @@ var21 <- create_fbapp_template(variable="color pulpa",
 ```{r}
 var22 <- create_fbapp_template(variable="Sabor",
                               type = "categorical",
-                              defaultValue=10,
+                              defaultValue="",
                               details="kg/ha",
                               categories=c("muy amargo","amargo","insabora","dulce","muy dulce"),
                               isVisible="",
@@ -107,7 +104,7 @@ var22 <- create_fbapp_template(variable="Sabor",
 
 - Percentage
 
-Podemos crear una variable del tipo porcentaje usando `type = percentage`. Esta variable viene por defecto con 0 y 100 como valores minimos y maximo dado que es un porcentaje. 
+Podemos crear una variable del tipo porcentaje usando `type = percentage`. Esta variable viene por defecto con `0` y `100` como valores minimos y maximo dado que es un porcentaje. 
 
 *Ejemplo*: sea la variable `contenido de nitrogeno`, una variable expresada en porcentaje, la cual R se implementa:
 
@@ -194,7 +191,7 @@ Podemos crear una variable multi-categorica usando `type = multicat`. Esta varia
 ```{r}
 var9 <- create_fbapp_template(
                               variable = "Morfologia del tuberculo", 
-                              type = "rust_rating",
+                              type = "multicat",
                               categories = c("oblonga","alargada","redonda",
                                             "eliptica","pocos ojos","achatada"),
                               details = "conteo secuencial"
@@ -238,7 +235,7 @@ Podemos crear una variable del tipo GPS usando  `type = location`. Esta variable
 ```{r}
 var12 <- create_fbapp_template(
                               variable = "Ubicacion GPS", 
-                              type = "photo"
+                              type = "location"
                               )
 ```
 
