@@ -23,8 +23,24 @@ write_rfbapp <- function(x, file = NULL ){
     return()
   }
   
+  
+  if(!is.element("trait",set = colnames(x))){
+    message("Variable's form must include trait colummn")
+    return()
+  }
+  
+  if(anyDuplicated(x$trait)>0){
+    dup <- x$trait[duplicated(x$trait)]
+    msg <- paste0("There duplicates in your variable's form. Please, remove duplicates", paste0(dup, collapse = ", "))
+    message(msg)
+    return()
+  }
+  
+  
   if(is.element("rfbapp",class(x))){
     write.csv(x, file = file, row.names = FALSE, na = "")  
+  } else {
+    message("this file is not fiel book app form file")
   }
   
 

@@ -22,10 +22,10 @@ conn <- dbConnect(
   "rfbapp.sqlite3"
 )
 
-DBI::dbExecute(conn, "DROP TABLE IF EXISTS vartable")
-DBI::dbExecute(conn, "DROP TABLE IF EXISTS tblrecords")
+DBI::dbExecute(conn, "DROP TABLE IF EXISTS tblfbapp")
+DBI::dbExecute(conn, "DROP TABLE IF EXISTS tblview")
 
-create_rfbapp_query = "CREATE TABLE vartable (
+create_rfbapp_query = "CREATE TABLE tblfbapp (
                                   vid                             INTEGER PRIMARY KEY AUTOINCREMENT,
                                   trait                           TEXT,
                                   format                          TEXT,
@@ -37,22 +37,20 @@ create_rfbapp_query = "CREATE TABLE vartable (
                                   isVisible                       TEXT,
                                   realPosition                    TEXT
                                 )"
-create_tblview_query = "CREATE TABLE tblrecords (
+
+create_tblview_query = "CREATE TABLE tblview (
                                   vid                             INTEGER PRIMARY KEY AUTOINCREMENT,
                                   trait                           TEXT,
-                                  type                            TEXT,
+                                  format                          TEXT,
                                   defaultValue                    TEXT,
                                   minimum                         TEXT,
                                   maximum                         TEXT,
-                                  categories                      TEXT,
                                   details                         TEXT,
+                                  categories                      TEXT,
                                   isVisible                       TEXT,
                                   realPosition                    TEXT,
-                                  ntime                           INTEGER
+                                  Nevaluation                     INTEGER
                                 )"
-
-
-
 
 
 #DBI::dbExecute(conn, "DROP TABLE IF EXISTS rfbapp")
@@ -62,9 +60,12 @@ DBI::dbExecute(conn, create_tblview_query)
 dbDisconnect(conn)
 #}
 
-### Reactive Values to display in DataTable
+###
 vardata <- reactiveValues(data = data.frame())
 
+
+
+print("paso 1")
 
 ################################################################################################
 
@@ -80,7 +81,7 @@ ui <- fluidPage(
     windowTitle = "rfbapp shiny web"
   ),
   
- fluidRow(
+  fluidRow(
     column(
       width = 2,   
       
@@ -115,8 +116,10 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
   
-# Validator of Inputs -------------------------------------------------------------
-
+  
+  
+  # Validator of Inputs -------------------------------------------------------------
+  
   iv <- InputValidator$new()
   # Add validation rules
   iv$add_rule("num_txt_var_name", ~ if (nchar(.) < 3) "Require At least 3 characters") #sv_required(message = "Required. At least 3 characters"))
@@ -159,12 +162,12 @@ server <- function(input, output, session) {
   #locations
   iv$add_rule("local_txt_var_name", ~ if (nchar(.) < 3) "Require At least 3 characters")#sv_required(message = "Required. At least 3 characters"))
   iv$add_rule("local_txt_details",  ~ if (nchar(.) < 3) "Require At least 3 characters")#sv_required(message = "Required. At least 3 characters"))
-
+  
   # Start displaying errors in the UI
   iv$enable()
   
-# Form Modal Dialog -------------------------------------------------------
-
+  # Form Modal Dialog -------------------------------------------------------
+  
   observeEvent(input$btn_add_vars, {
     showModal(modalDialog(
       title = "Form",
@@ -182,7 +185,6 @@ server <- function(input, output, session) {
         textInput("num_txt_details",label = "Details",placeholder = "Full name or description of the variable"),
         numericInput("num_var_min",label = "Minimum value", value = 0),
         numericInput("num_var_max",label = "Maximum value", value = 100)
-        
       ), 
       #condition for categorical variables
       conditionalPanel(
@@ -278,17 +280,201 @@ server <- function(input, output, session) {
       )
     ))
   })
-
-# Reactive data - Table of user's records --------------------------------
   
-tbl_records <- reactive({
   
-  out <- get_tbl_records(AllInputs())  
+  # Reactive data - tblrecords ----------------------------------------------
   
-})  
+  tblrecords <- reactive({
     
-
-# Reactive data- User's forms ---------------------------------------------
+    type <- as.character(input$sel_var_type)
+    
+    if(type=="numeric"){
+      
+      out <-  data.frame(
+        variable=input$num_txt_var_name,
+        type = input$sel_var_type,
+        defaultValue="",
+        minimum = as.numeric(input$num_var_min),
+        maximum = as.numeric(input$num_var_max),
+        categories = "",
+        details = input$num_txt_details,
+        isVisible="",
+        realPosition="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
+    } else if(type == "categorical"){
+      
+      out <- data.frame(
+        variable=input$cat_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue="",
+        minimum = "",
+        maximum = "",
+        categories=input$cat_sel_values,
+        details= input$cat_txt_details,
+        isVisible="",
+        realPosition="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
+    } else if(type == "percent"){
+      
+      out <- data.frame(
+        variable=input$pct_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue="",
+        minimum = "",
+        maximum = "",
+        categories="",
+        details= input$pct_txt_details,
+        isVisible="",
+        realPosition="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
+    } else if(type == "audio"){
+      
+      out <-  data.frame(
+        variable = input$aud_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        minimum = "",
+        maximum = "",
+        categories ="",
+        details = input$aud_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
+    } else if(type =="photo"){
+      
+      out <-  data.frame(
+        variable = input$pho_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        minimum = "",
+        maximum = "",
+        categories ="",
+        details = input$pho_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
+    } else if(type == "date") {
+      
+      out <-  data.frame(
+        variable = input$date_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        minimum = "",
+        maximum = "",
+        categories ="",
+        details = input$date_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
+    } else if(type == "bool"){
+      
+      out <-  data.frame(
+        variable = input$bool_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        minimum = "",
+        maximum = "",
+        categories ="",
+        details = input$bool_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
+    } else if(type =="text"){
+      
+      out <-  data.frame(
+        variable = input$text_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        minimum = "",
+        maximum = "",
+        categories ="",
+        details = input$text_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
+    } else if(type == "count"){
+      
+      out <-  data.frame(
+        variable = input$count_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        minimum = "",
+        maximum = "",
+        categories ="",
+        details = input$count_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
+    } else if(type == "multicat"){
+      
+      out <-  data.frame(
+        variable = as.character(input$mulc_txt_var_name),
+        type = as.character(input$sel_var_type),
+        defaultValue = "",
+        minimum = "",
+        maximum = "",
+        categories = input$mulc_sel_values,
+        details = input$mulc_txt_details,
+        isVisible = "",
+        realPosition = "",
+        ntime = as.numeric(input$neval_time)
+      )
+      
+    } else if(type == "rust_rating"){
+      
+      out <-  data.frame(
+        variable = input$rust_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        minimum = "",
+        maximum = "",
+        categories ="",
+        details = input$rust_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
+    } else if(type == "location"){
+      
+      out <-  data.frame(
+        variable = input$local_txt_var_name,
+        type = input$sel_var_type,
+        defaultValue ="",
+        minimum = "",
+        maximum = "",
+        categories ="",
+        details = input$local_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
+    } 
+    
+    out
+  })  
+  
+  
+  
+  # Reactive data- User's forms ---------------------------------------------
   
   rfbapp_form <- reactive({
     #     
@@ -298,199 +484,199 @@ tbl_records <- reactive({
     if(type=="numeric"){
       
       out <-  create_fbapp_template(
-                                    variable=input$num_txt_var_name,
-                                    type = input$sel_var_type,
-                                    defaultValue=10,
-                                    minimum = as.numeric(input$num_var_min),
-                                    maximum = as.numeric(input$num_var_max),
-                                    details = input$num_txt_details,
-                                    isVisible="",
-                                    realPosition="",
-                                    ntime = as.numeric(input$neval_time)
-                                    )
+        variable=input$num_txt_var_name,
+        type = input$sel_var_type,
+        defaultValue=10,
+        minimum = as.numeric(input$num_var_min),
+        maximum = as.numeric(input$num_var_max),
+        details = input$num_txt_details,
+        isVisible="",
+        realPosition="",
+        ntime = as.numeric(input$neval_time)
+      )
       
     } else if(type == "categorical"){
       
       out <-  create_fbapp_template(
-                                    variable=input$cat_txt_var_name ,
-                                    type = input$sel_var_type,
-                                    defaultValue="",
-                                    categories=input$cat_sel_values,
-                                    details= input$cat_txt_details,
-                                    isVisible="",
-                                    realPosition="",
-                                    ntime = as.numeric(input$neval_time)
-                                    )
+        variable=input$cat_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue="",
+        categories=input$cat_sel_values,
+        details= input$cat_txt_details,
+        isVisible="",
+        realPosition="",
+        ntime = as.numeric(input$neval_time)
+      )
       
     } else if(type == "percent"){
       
       out <-  create_fbapp_template(
-                                    variable=input$pct_txt_var_name ,
-                                    type = input$sel_var_type,
-                                    defaultValue="",
-                                    categories="",
-                                    details= input$pct_txt_details,
-                                    isVisible="",
-                                    realPosition="",
-                                    ntime = as.numeric(input$neval_time)
-                                   )
+        variable=input$pct_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue="",
+        categories="",
+        details= input$pct_txt_details,
+        isVisible="",
+        realPosition="",
+        ntime = as.numeric(input$neval_time)
+      )
       
     } else if(type == "audio"){
       
       out <-  create_fbapp_template(
-                                    variable = input$aud_txt_var_name ,
-                                    type = input$sel_var_type,
-                                    defaultValue ="",
-                                    categories ="",
-                                    details = input$aud_txt_details,
-                                    isVisible ="",
-                                    realPosition ="",
-                                    ntime = as.numeric(input$neval_time)
-                                    )
+        variable = input$aud_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        categories ="",
+        details = input$aud_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
       
     } else if(type =="photo"){
       
       out <-  create_fbapp_template(
-                                    variable = input$pho_txt_var_name ,
-                                    type = input$sel_var_type,
-                                    defaultValue ="",
-                                    categories ="",
-                                    details = input$pho_txt_details,
-                                    isVisible ="",
-                                    realPosition ="",
-                                    ntime = as.numeric(input$neval_time)
-                                    )
+        variable = input$pho_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        categories ="",
+        details = input$pho_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
       
     } else if(type == "date") {
       
       out <-  create_fbapp_template(
-                                    variable = input$date_txt_var_name ,
-                                    type = input$sel_var_type,
-                                    defaultValue ="",
-                                    categories ="",
-                                    details = input$date_txt_details,
-                                    isVisible ="",
-                                    realPosition ="",
-                                    ntime = as.numeric(input$neval_time)
-                                    )
-    
+        variable = input$date_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        categories ="",
+        details = input$date_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
     } else if(type == "bool"){
       
       out <-  create_fbapp_template(
-                                    variable = input$bool_txt_var_name ,
-                                    type = input$sel_var_type,
-                                    defaultValue ="",
-                                    categories ="",
-                                    details = input$bool_txt_details,
-                                    isVisible ="",
-                                    realPosition ="",
-                                    ntime = as.numeric(input$neval_time)
-                                    )
-  
+        variable = input$bool_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        categories ="",
+        details = input$bool_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
+      
     } else if(type =="text"){
       
       out <-  create_fbapp_template(
-                                    variable = input$text_txt_var_name ,
-                                    type = input$sel_var_type,
-                                    defaultValue ="",
-                                    categories ="",
-                                    details = input$text_txt_details,
-                                    isVisible ="",
-                                    realPosition ="",
-                                    ntime = as.numeric(input$neval_time)
-                                    )
+        variable = input$text_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        categories ="",
+        details = input$text_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
       
     } else if(type == "count"){
       
       out <-  create_fbapp_template(
-                                    variable = input$count_txt_var_name ,
-                                    type = input$sel_var_type,
-                                    defaultValue ="",
-                                    categories ="",
-                                    details = input$count_txt_details,
-                                    isVisible ="",
-                                    realPosition ="",
-                                    ntime = as.numeric(input$neval_time)
-                                    )
+        variable = input$count_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        categories ="",
+        details = input$count_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
       
     } else if(type == "multicat"){
       
       out <-  create_fbapp_template(
-                                    variable = as.character(input$mulc_txt_var_name),
-                                    type = as.character(input$sel_var_type),
-                                    defaultValue = "",
-                                    categories = input$mulc_sel_values,
-                                    details = input$mulc_txt_details,
-                                    isVisible = "",
-                                    realPosition = "",
-                                    ntime = as.numeric(input$neval_time)
-                                   )
+        variable = as.character(input$mulc_txt_var_name),
+        type = as.character(input$sel_var_type),
+        defaultValue = "",
+        categories = input$mulc_sel_values,
+        details = input$mulc_txt_details,
+        isVisible = "",
+        realPosition = "",
+        ntime = as.numeric(input$neval_time)
+      )
       
     } else if(type == "rust_rating"){
       
       out <-  create_fbapp_template(
-                                    variable = input$rust_txt_var_name ,
-                                    type = input$sel_var_type,
-                                    defaultValue ="",
-                                    categories ="",
-                                    details = input$rust_txt_details,
-                                    isVisible ="",
-                                    realPosition ="",
-                                    ntime = as.numeric(input$neval_time)
-                                    )
+        variable = input$rust_txt_var_name ,
+        type = input$sel_var_type,
+        defaultValue ="",
+        categories ="",
+        details = input$rust_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
       
     } else if(type == "location"){
       
       out <-  create_fbapp_template(
-                                    variable = input$local_txt_var_name,
-                                    type = input$sel_var_type,
-                                    defaultValue ="",
-                                    categories ="",
-                                    details = input$local_txt_details,
-                                    isVisible ="",
-                                    realPosition ="",
-                                    ntime = as.numeric(input$neval_time)
-                                    )
+        variable = input$local_txt_var_name,
+        type = input$sel_var_type,
+        defaultValue ="",
+        categories ="",
+        details = input$local_txt_details,
+        isVisible ="",
+        realPosition ="",
+        ntime = as.numeric(input$neval_time)
+      )
     } 
-  
+    
     out
   })#end of reactive
-
-  ## All Shiny Inputs
+  
+  
   AllInputs <- reactive({
     x <- reactiveValuesToList(input)
   })
-
-
-# Reactive check value ----------------------------------------------------
-
+  
+  
+  # Reactive check value ----------------------------------------------------
+  
   cond <- reactive({ 
     out <- check_input_condition(input$sel_var_type, AllInputs())
     out
   })
   
-
-# Submit data -------------------------------------------------------------
-
+  
+  # Submit data -------------------------------------------------------------
+  
+  
+  
+  
   observeEvent(input$btn_submit ,{
     
     cond <- cond() 
-    abbvar <- get_abbvar(input$sel_var_type, AllInputs()) #get abbreviation name input given type of variable
-    
-    print(tbl_records())
+    abbvar <- get_abbvar(input$sel_var_type, AllInputs())
     
     if(isFALSE(cond)){ 
-       msg <- "Please correct the errors in the form and try again" 
-       showNotification(msg,type = "error")
-       
+      msg <- "Please correct the errors in the form and try again" 
+      showNotification(msg,type = "error")
+      
     } else {
-    
+      
       conn <- dbConnect(
-                        RSQLite::SQLite(),
-                        "rfbapp.sqlite3"
-                       )
-      #out <- dbGetQuery(conn, 'SELECT * FROM vartable')
-      out <- dbGetQuery(conn, 'SELECT * FROM tblrecords')
+        RSQLite::SQLite(),
+        "rfbapp.sqlite3"
+      )
+      out <- dbGetQuery(conn, 'SELECT * FROM tblfbapp')
       
       res <- check_form(out)$cond
       msg <- check_form(out)$msg
@@ -500,15 +686,13 @@ tbl_records <- reactive({
         showNotification(msg, type = "error",duration = 3) 
         vardata$records <- data.frame()
         
-      #} else if(is.element(abbvar, out$trait)){
       } else if(is.element(abbvar, out$trait)){
         showNotification("The variable abbreviation is repeated. Change for other", type = "error",duration = 3) 
         vardata$records <- out
+        
       } else {
-        dbWriteTable(conn, "vartable", rfbapp_form(), append=TRUE)
-        dbWriteTable(conn, "tblrecords", tbl_records(), append=TRUE)
-        #out <- dbGetQuery(conn, 'SELECT * FROM vartable')
-        out <- dbGetQuery(conn, 'SELECT * FROM tblrecords')
+        dbWriteTable(conn, "tblfbapp", rfbapp_form(), append=TRUE) 
+        out <- dbGetQuery(conn, 'SELECT * FROM tblfbapp')
         shiny::showNotification(msg, type = "message", duration = 3) 
         
         vardata$records <- out
@@ -517,35 +701,32 @@ tbl_records <- reactive({
       dbDisconnect(conn)
     }
   })
-
-
-# DT table results --------------------------------------------------------
-
+  
+  
+  # DT table results --------------------------------------------------------
+  
   output$tbl <- DT::renderDT(
     #verificamos los datos de la tabla
-    vardata$records, 
-    #colnames = c('Variable', 'Type', 'Check', 'Entity',   'ID','File'),
-    options = list(lengthChange = FALSE, selection = 'single')
+    vardata$records, options = list(lengthChange = FALSE, selection = 'single')
   )
-
-# Button exports variable's form ------------------------------------------
-    
+  
+  # Button exports variable's form ------------------------------------------
+  
   output$btn_export_formvars <- downloadHandler(
     # For PDF output, change this to "report.pdf"
     filename =  function() {
       paste0("fbapp_form",".trt")
     },
     content = function(file) {
-    conn <- dbConnect(
-                      RSQLite::SQLite(),
-                      "rfbapp.sqlite3"
-                      )
-    out <- dbGetQuery(conn, 'SELECT * FROM vartable')
-    out <- out[,-1] #remove the id column, not necessary 
-    class(out) <- c("data.frame","rfbapp")
-    dbDisconnect(conn)
-    write_rfbapp(out, file)
-  })
+      conn <- dbConnect(
+        RSQLite::SQLite(),
+        "rfbapp.sqlite3"
+      )
+      out <- dbGetQuery(conn, 'SELECT * FROM tblfbapp')
+      class(out) <- c("data.frame","rfbapp")
+      dbDisconnect(conn)
+      write_rfbapp(out, file)
+    })
   
 }
 
@@ -553,13 +734,14 @@ tbl_records <- reactive({
 shinyApp(ui = ui, server = server)
 
 
-#TODO 6: limpiar los campos despues de click en submit button
+##TODO 4: remover duplicados en trait abbreviation name
+##TODO 5: agregar eval en el tiempo
 
+#https://mastering-shiny.org/action-transfer.html
 
 ####### referencias
 ##1. https://stackoverflow.com/questions/50251813/how-to-update-datatable-in-shiny-with-button
 ##2. https://stackoverflow.com/questions/48719266/how-to-ensure-unique-ids-when-inserting-into-sqlite-database-in-r-shiny
 ##3. https://stackoverflow.com/questions/58610472/how-to-insert-values-to-the-sqlite-database-from-r-data
-#https://mastering-shiny.org/action-transfer.html
 
 

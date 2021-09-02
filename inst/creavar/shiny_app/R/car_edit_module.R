@@ -128,9 +128,12 @@ car_edit_module <- function(input, output, session, modal_title, car_to_edit, mo
       )
     )
 
+   
+    
     # Observe event for "Model" text input in Add/Edit Car Modal
     # `shinyFeedback`
     observeEvent(input$model, {
+      
       if (input$model == "") {
         shinyFeedback::showFeedbackDanger(
           "model",
