@@ -116,7 +116,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   
 # Validator of Inputs -------------------------------------------------------------
-
+  
   iv <- InputValidator$new()
   # Add validation rules
   iv$add_rule("num_txt_var_name", ~ if (nchar(.) < 3) "Require At least 3 characters") #sv_required(message = "Required. At least 3 characters"))
@@ -374,7 +374,7 @@ tbl_records <- reactive({
                                     ntime = as.numeric(input$neval_time)
                                     )
     
-    } else if(type == "bool"){
+    } else if(type == "boolean"){
       
       out <-  create_fbapp_template(
                                     variable = input$bool_txt_var_name ,
@@ -400,7 +400,7 @@ tbl_records <- reactive({
                                     ntime = as.numeric(input$neval_time)
                                     )
       
-    } else if(type == "count"){
+    } else if(type == "counter"){
       
       out <-  create_fbapp_template(
                                     variable = input$count_txt_var_name ,
@@ -510,6 +510,68 @@ tbl_records <- reactive({
         #out <- dbGetQuery(conn, 'SELECT * FROM vartable')
         out <- dbGetQuery(conn, 'SELECT * FROM tblrecords')
         shiny::showNotification(msg, type = "message", duration = 3) 
+        
+        ### Update Numeric vars
+        updateTextInput(session,    inputId = "num_txt_var_name", value = "")
+        updateTextInput(session,    inputId = "num_txt_details",  value = "")
+        updateNumericInput(session, inputId = "num_var_min",   value = 0)
+        updateNumericInput(session, inputId = "num_var_max",   value = 100)
+        ### update categorical vars
+        #categorical validations
+        updateTextInput(session, inputId = "cat_txt_var_name", value = "")
+        updateTextInput(session, inputId ="cat_txt_details", value = "")
+        
+        updateSelectizeInput(session, inputId = "cat_sel_values",choices = character(0),
+                             options = list(
+                                 'multiple' = TRUE,
+                                 'create' = TRUE,
+                                 'persist' = FALSE)
+                             )
+        #percentage validations
+        updateTextInput(session,    inputId ="pct_txt_var_name", value = "") 
+        updateTextInput(session,    inputId ="pct_txt_details", value = "")  
+        #audio validations
+        updateTextInput(session,    inputId ="aud_txt_var_name", value = "")
+        updateTextInput(session,    inputId ="aud_txt_details", value = "") 
+        #photo validations
+        updateTextInput(session,    inputId ="pho_txt_var_name", value = "") 
+        updateTextInput(session,    inputId ="pho_txt_details",  value = "")
+        #date valiations
+        updateTextInput(session,    inputId ="date_txt_var_name", value = "")
+        updateTextInput(session,    inputId ="date_txt_details",  value = "")
+        #bool validations
+        updateTextInput(session,    inputId ="bool_txt_var_name", value = "")
+        updateTextInput(session,    inputId ="bool_txt_details",  value = "")
+        #text validations
+        updateTextInput(session,    inputId ="text_txt_var_name", value = "")
+        updateTextInput(session,    inputId ="text_txt_details",  value = "")
+        #count validations
+        updateTextInput(session,    inputId ="count_txt_var_name", value = "")  #sv_required(message = "Required. At least 3 characters"))
+        updateTextInput(session,    inputId ="count_txt_details", value = "")#sv_required(message = "Required. At least 3 characters"))
+        #multicategorical validations
+        updateTextInput(session,    inputId ="mulc_txt_var_name", value = "")#sv_required(message = "Required. At least 3 characters"))
+        updateTextInput(session,    inputId ="mulc_txt_details",value = "") #sv_required(message = "Required. At least 3 characters"))
+        updateSelectizeInput(session, inputId = "mulc_sel_values",choices = character(0),
+                             options = list(
+                               'multiple' = TRUE,
+                               'create' = TRUE,
+                               'persist' = FALSE)
+        )
+        #rust score validations
+        updateTextInput(session,    inputId ="rust_txt_var_name", value = "")#sv_required(message = "Required. At least 3 characters"))
+        updateTextInput(session,    inputId ="rust_txt_details",value = "") #sv_required(message = "Required. At least 3 characters"))
+        #locations
+        updateTextInput(session,    inputId ="local_txt_var_name", value = "")#sv_required(message = "Required. At least 3 characters"))
+        updateTextInput(session,    inputId ="local_txt_details",value = "") #sv_required(message = "Required. At least 3 characters"))
+        
+        
+        
+        
+        #################
+        
+        
+        updateNumericInput(session, inputId = "neval_time", value = 1, min = 1)
+        
         
         vardata$records <- out
       }

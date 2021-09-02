@@ -408,7 +408,7 @@ server <- function(input, output, session) {
         ntime = as.numeric(input$neval_time)
       )
       
-    } else if(type == "count"){
+    } else if(type == "counter"){
       
       out <-  data.frame(
         variable = input$count_txt_var_name ,
@@ -586,7 +586,7 @@ server <- function(input, output, session) {
         ntime = as.numeric(input$neval_time)
       )
       
-    } else if(type == "count"){
+    } else if(type == "counter"){
       
       out <-  create_fbapp_template(
         variable = input$count_txt_var_name ,

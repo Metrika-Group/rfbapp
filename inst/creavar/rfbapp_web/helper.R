@@ -17,15 +17,15 @@ get_abbvar <- function(type, inputs){
     out <-  inputs$pho_txt_var_name
   } else if(type == "date"){
     out <-  inputs$date_txt_var_name
-  } else if(type == "bool"){
+  } else if(type == "boolean"){
     out <-  inputs$bool_txt_var_name
   } else if(type == "text"){
     out <-  inputs$text_txt_var_name
-  } else if(type == "count"){
+  } else if(type == "counter"){
     out <-  inputs$count_txt_var_name
   } else if(type == "multicat"){
     out <-  inputs$mulc_txt_var_name
-  } else if(type == "rust_score"){
+  } else if(type == "rust_rating"){
     out <-  inputs$rust_txt_var_name
   } else if(type == "location"){
     out <-  inputs$local_txt_var_name
@@ -132,7 +132,7 @@ get_tbl_records <- function(inputs){
       ntime = as.numeric(inputs$neval_time)
     )
     
-  } else if(type == "bool"){
+  } else if(type == "boolean"){
     
     out <-  data.frame(
       trait = inputs$bool_txt_var_name ,
@@ -162,7 +162,7 @@ get_tbl_records <- function(inputs){
       ntime = as.numeric(inputs$neval_time)
     )
     
-  } else if(type == "count"){
+  } else if(type == "counter"){
     
     out <-  data.frame(
       trait = inputs$count_txt_var_name ,
@@ -251,15 +251,15 @@ check_input_condition <- function(type, inputs){
     cond <-  (nchar(inputs$pho_txt_var_name)>2 && nchar(inputs$pho_txt_details)>2)
   } else if(type == "date"){
     cond <-  (nchar(inputs$date_txt_var_name)>2 && nchar(inputs$date_txt_details)>2)
-  } else if(type == "bool"){
+  } else if(type == "boolean"){
     cond <-  (nchar(inputs$bool_txt_var_name)>2 && nchar(inputs$bool_txt_details)>2)
   } else if(type == "text"){
     cond <-  (nchar(inputs$text_txt_var_name)>2 && nchar(inputs$text_txt_details)>2)
-  } else if(type == "count"){
+  } else if(type == "counter"){
     cond <-  (nchar(inputs$count_txt_var_name)>2 && nchar(inputs$count_txt_details)>2)
   } else if(type == "multicat"){
     cond <-  (nchar(inputs$mulc_txt_var_name)>2 && nchar(inputs$mulc_txt_details)>2 && length(inputs$mulc_sel_values)>1)
-  } else if(type == "rust_score"){
+  } else if(type == "rust_rating"){
     cond <-  (nchar(inputs$rust_txt_var_name )>2 && nchar(inputs$rust_txt_details)>2)
   } else if(type == "location"){
     cond <-  (nchar(inputs$local_txt_var_name)>2 && nchar(inputs$local_txt_details)>2)
