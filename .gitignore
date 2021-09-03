@@ -25,10 +25,10 @@ vignettes/*.html
 vignettes/*.pdf
 
 #do not upload
-inst/data_prep/
-inst/shiny_app/
-/inst/rfbapp_web/app3.R
-/inst/rfbapp_web/app2.R
+inst/creavar/rfbapp_web/data_prep/
+inst/creavar/rfbapp_web/shiny_app/
+/inst/creavar/rfbapp_web/app3.R
+/inst/creavar/rfbapp_web/app2.R
 
 
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
